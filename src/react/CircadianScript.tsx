@@ -9,10 +9,5 @@ export interface CircadianScriptProps {
 
 export const CircadianScript = ({ config, nonce }: CircadianScriptProps) => {
   const script = useMemo(() => createInlineScript(config), [config]);
-  return (
-    <script
-      nonce={nonce}
-      dangerouslySetInnerHTML={{ __html: script }}
-    />
-  );
+  return <script nonce={nonce} dangerouslySetInnerHTML={{ __html: script }} />;
 };

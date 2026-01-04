@@ -21,4 +21,3 @@ assignees: ""
 ```ts
 // Minimal reproducible example
 ```
-

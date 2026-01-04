@@ -9,9 +9,7 @@ export const useCircadianTokens = () => {
   const cssVars = useMemo(() => tokensToCssVars(tokens), [tokens]);
   const applyToStyle = useMemo(
     () => ({
-      style: Object.fromEntries(
-        Object.entries(cssVars).map(([key, value]) => [key, value])
-      )
+      style: Object.fromEntries(Object.entries(cssVars).map(([key, value]) => [key, value]))
     }),
     [cssVars]
   );

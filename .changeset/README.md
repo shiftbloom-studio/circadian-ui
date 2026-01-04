@@ -7,4 +7,3 @@ This repo uses [Changesets](https://github.com/changesets/changesets) for versio
 - The Release workflow will either:
   - create a version PR, or
   - publish to npm after that PR is merged (depending on whether there are unpublished changesets)
-

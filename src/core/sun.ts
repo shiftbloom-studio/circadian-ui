@@ -1,11 +1,6 @@
 import { CircadianSchedule } from "./types";
 import { CircadianScheduleMinutes, getMinutesFromDate } from "./schedule";
-import {
-  Phase,
-  SunScheduleOptions,
-  SunTimes,
-  SunTimesProvider
-} from "./types";
+import { Phase, SunScheduleOptions, SunTimes, SunTimesProvider } from "./types";
 
 const minutesInDay = 24 * 60;
 
@@ -28,18 +23,10 @@ export const deriveSunSchedule = (
   const sunriseMinutes = getMinutesFromDate(sunTimes.sunrise);
   const sunsetMinutes = getMinutesFromDate(sunTimes.sunset);
 
-  const dawnStart = normalizeMinutes(
-    sunriseMinutes - config.dawnOffsetMinutesBefore
-  );
-  const dawnEnd = normalizeMinutes(
-    sunriseMinutes + config.dawnOffsetMinutesAfter
-  );
-  const duskStart = normalizeMinutes(
-    sunsetMinutes - config.duskOffsetMinutesBefore
-  );
-  const duskEnd = normalizeMinutes(
-    sunsetMinutes + config.duskOffsetMinutesAfter
-  );
+  const dawnStart = normalizeMinutes(sunriseMinutes - config.dawnOffsetMinutesBefore);
+  const dawnEnd = normalizeMinutes(sunriseMinutes + config.dawnOffsetMinutesAfter);
+  const duskStart = normalizeMinutes(sunsetMinutes - config.duskOffsetMinutesBefore);
+  const duskEnd = normalizeMinutes(sunsetMinutes + config.duskOffsetMinutesAfter);
 
   return {
     dawn: { start: dawnStart, end: dawnEnd },

@@ -1,7 +1,6 @@
 import { computeNextTransition, getPhaseFromTime } from "../src/core/schedule";
 
-const makeDate = (hours: number, minutes: number) =>
-  new Date(2024, 0, 1, hours, minutes, 0);
+const makeDate = (hours: number, minutes: number) => new Date(2024, 0, 1, hours, minutes, 0);
 
 describe("schedule", () => {
   it("resolves phases across default windows", () => {

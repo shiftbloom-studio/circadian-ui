@@ -1,18 +1,11 @@
-import {
-  CircadianConfig,
-  CircadianSchedule,
-  Phase,
-  ScheduleMode
-} from "./types";
+import { CircadianConfig, CircadianSchedule, Phase, ScheduleMode } from "./types";
 import { defaultSchedule } from "./schedule";
 import { defaultStorageKey } from "./storage";
 import { defaultTokens, tokensToCssVars } from "./tokens";
 
 const serialize = (value: unknown): string => JSON.stringify(value);
 
-const getMergedSchedule = (
-  schedule?: Partial<CircadianSchedule>
-): CircadianSchedule => ({
+const getMergedSchedule = (schedule?: Partial<CircadianSchedule>): CircadianSchedule => ({
   ...defaultSchedule,
   ...schedule,
   dawn: { ...defaultSchedule.dawn, ...schedule?.dawn },
@@ -108,10 +101,7 @@ export const createInlineScript = (config?: CircadianConfig): string => {
 })();`;
 };
 
-export const resolveInitialPhase = (
-  date: Date,
-  schedule?: Partial<CircadianSchedule>
-): Phase => {
+export const resolveInitialPhase = (date: Date, schedule?: Partial<CircadianSchedule>): Phase => {
   const merged = getMergedSchedule(schedule);
   const minutes = date.getHours() * 60 + date.getMinutes();
   const isWithin = (value: number, start: number, end: number) => {

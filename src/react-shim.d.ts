@@ -1,12 +1,5 @@
 declare module "react" {
-  export type ReactNode =
-    | string
-    | number
-    | boolean
-    | null
-    | undefined
-    | ReactElement
-    | ReactNode[];
+  export type ReactNode = string | number | boolean | null | undefined | ReactElement | ReactNode[];
 
   export interface ReactElement {
     type: unknown;
@@ -28,26 +21,16 @@ declare module "react" {
   export function useState<T>(initial: T | (() => T)): [T, (value: T) => void];
   export function useEffect(effect: () => void | (() => void), deps?: unknown[]): void;
   export function useMemo<T>(factory: () => T, deps: unknown[]): T;
-  export function useCallback<T extends (...args: any[]) => any>(
-    callback: T,
-    deps: unknown[]
-  ): T;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export function useCallback<T extends (...args: any[]) => any>(callback: T, deps: unknown[]): T;
   export function useRef<T>(initialValue: T): MutableRefObject<T>;
 
   export const Fragment: unique symbol;
 }
 
 declare module "react/jsx-runtime" {
-  export function jsx(
-    type: unknown,
-    props: Record<string, unknown>,
-    key?: string
-  ): unknown;
-  export function jsxs(
-    type: unknown,
-    props: Record<string, unknown>,
-    key?: string
-  ): unknown;
+  export function jsx(type: unknown, props: Record<string, unknown>, key?: string): unknown;
+  export function jsxs(type: unknown, props: Record<string, unknown>, key?: string): unknown;
   export const Fragment: unique symbol;
 }
 

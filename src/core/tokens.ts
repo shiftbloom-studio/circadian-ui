@@ -1,8 +1,4 @@
-import {
-  CircadianTokens,
-  ColorSchemeBias,
-  Phase
-} from "./types";
+import { CircadianTokens, ColorSchemeBias, Phase } from "./types";
 
 export const defaultTokens: Record<Phase, CircadianTokens> = {
   dawn: {
@@ -88,9 +84,7 @@ export const resolveTokens = (
   };
 };
 
-export const tokensToCssVars = (
-  tokens: CircadianTokens
-): Record<string, string> => {
+export const tokensToCssVars = (tokens: CircadianTokens): Record<string, string> => {
   const vars: Record<string, string> = {};
   for (const [key, value] of Object.entries(tokens)) {
     const cssVar = cssVarMap[key as keyof CircadianTokens];
@@ -99,10 +93,7 @@ export const tokensToCssVars = (
   return vars;
 };
 
-export const applyTokensToElement = (
-  element: HTMLElement,
-  tokens: CircadianTokens
-) => {
+export const applyTokensToElement = (element: HTMLElement, tokens: CircadianTokens) => {
   const vars = tokensToCssVars(tokens);
   for (const [key, value] of Object.entries(vars)) {
     element.style.setProperty(key, value);
@@ -120,10 +111,7 @@ export const applyColorSchemeBias = (
   const delta = prefers === "dark" ? bias.dark : bias.light;
   const adjust = (value: string): string => {
     const [h, s, l] = value.split(" ");
-    const lightness = Math.max(
-      0,
-      Math.min(100, Number(l.replace("%", "")) + delta)
-    );
+    const lightness = Math.max(0, Math.min(100, Number(l.replace("%", "")) + delta));
     return `${h} ${s} ${lightness}%`;
   };
 

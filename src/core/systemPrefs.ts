@@ -1,8 +1,6 @@
 import { SystemPreferences } from "./types";
 
-const getPreference = (
-  query: string
-): MediaQueryList | null => {
+const getPreference = (query: string): MediaQueryList | null => {
   if (typeof window === "undefined" || !window.matchMedia) {
     return null;
   }

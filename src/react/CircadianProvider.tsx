@@ -17,17 +17,10 @@ import {
 } from "../core/types";
 import { getPhaseFromTime, computeNextTransition } from "../core/schedule";
 import { getPhaseFromSunTimes, getScheduleFromProvider } from "../core/sun";
-import {
-  applyColorSchemeBias,
-  applyTokensToElement,
-  resolveTokens
-} from "../core/tokens";
+import { applyColorSchemeBias, applyTokensToElement, resolveTokens } from "../core/tokens";
 import { ensureContrast } from "../core/contrast";
 import { loadPersistedState, persistState } from "../core/storage";
-import {
-  getSystemPreferences,
-  subscribeSystemPreferences
-} from "../core/systemPrefs";
+import { getSystemPreferences, subscribeSystemPreferences } from "../core/systemPrefs";
 import {
   defaultColorSchemeBias,
   defaultSystemOptions,
@@ -90,11 +83,7 @@ const computeNextChange = (
     return null;
   }
   if (mode === "sun") {
-    const schedule = getScheduleFromProvider(
-      date,
-      config.sunTimesProvider,
-      config.sunSchedule
-    );
+    const schedule = getScheduleFromProvider(date, config.sunTimesProvider, config.sunSchedule);
     if (schedule) {
       return computeNextTransition(date, schedule);
     }
@@ -107,20 +96,13 @@ export interface CircadianProviderProps {
   children: ReactNode;
 }
 
-export const CircadianProvider = ({
-  config = {},
-  children
-}: CircadianProviderProps) => {
+export const CircadianProvider = ({ config = {}, children }: CircadianProviderProps) => {
   const storageKey = config.storageKey;
   const shouldPersist = config.persist !== false;
-  const [systemPrefs, setSystemPrefs] = useState<SystemPreferences>(
-    getInitialSystemPreferences
-  );
+  const [systemPrefs, setSystemPrefs] = useState<SystemPreferences>(getInitialSystemPreferences);
 
   const initialPersisted =
-    typeof window !== "undefined" && shouldPersist
-      ? loadPersistedState(storageKey)
-      : null;
+    typeof window !== "undefined" && shouldPersist ? loadPersistedState(storageKey) : null;
 
   const [mode, setModeState] = useState<ScheduleMode>(
     initialPersisted?.mode ?? config.mode ?? "time"
@@ -151,11 +133,7 @@ export const CircadianProvider = ({
   const tokens = useMemo(() => {
     let resolved = resolveTokens(phase, config.tokens);
     if (systemOptions.respectColorScheme) {
-      resolved = applyColorSchemeBias(
-        resolved,
-        systemPrefs.prefersColorScheme,
-        colorBias
-      );
+      resolved = applyColorSchemeBias(resolved, systemPrefs.prefersColorScheme, colorBias);
     }
     if (accessibility.enforceContrast) {
       resolved = ensureContrast(resolved, accessibility);
@@ -209,8 +187,7 @@ export const CircadianProvider = ({
       return;
     }
     root.setAttribute("data-cui-phase", phase);
-    const allowMotion =
-      !systemPrefs.reducedMotion || !systemOptions.respectReducedMotion;
+    const allowMotion = !systemPrefs.reducedMotion || !systemOptions.respectReducedMotion;
     if (transition.enabled && allowMotion) {
       root.style.transition = `background-color ${transition.durationMs}ms ease, color ${transition.durationMs}ms ease`;
     } else {
@@ -256,13 +233,10 @@ export const CircadianProvider = ({
     [phase, phaseOverride]
   );
 
-  const setPhaseOverride = useCallback(
-    (nextPhase: Phase) => {
-      setPhaseOverrideState(nextPhase);
-      setModeState("manual");
-    },
-    []
-  );
+  const setPhaseOverride = useCallback((nextPhase: Phase) => {
+    setPhaseOverrideState(nextPhase);
+    setModeState("manual");
+  }, []);
 
   const clearOverride = useCallback(() => {
     setPhaseOverrideState(null);
@@ -283,11 +257,7 @@ export const CircadianProvider = ({
     [phase, mode, tokens, nextChangeAt, setMode, setPhaseOverride, clearOverride]
   );
 
-  return (
-    <CircadianContext.Provider value={contextValue}>
-      {children}
-    </CircadianContext.Provider>
-  );
+  return <CircadianContext.Provider value={contextValue}>{children}</CircadianContext.Provider>;
 };
 
 export const useCircadianContext = () => {

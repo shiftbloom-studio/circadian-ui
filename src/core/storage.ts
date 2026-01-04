@@ -5,9 +5,7 @@ export const defaultStorageKey = "cui:preferences";
 const hasStorage = (): boolean =>
   typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 
-export const loadPersistedState = (
-  key: string = defaultStorageKey
-): PersistedState | null => {
+export const loadPersistedState = (key: string = defaultStorageKey): PersistedState | null => {
   if (!hasStorage()) {
     return null;
   }
@@ -22,10 +20,7 @@ export const loadPersistedState = (
   }
 };
 
-export const persistState = (
-  state: PersistedState,
-  key: string = defaultStorageKey
-): void => {
+export const persistState = (state: PersistedState, key: string = defaultStorageKey): void => {
   if (!hasStorage()) {
     return;
   }
@@ -36,9 +31,7 @@ export const persistState = (
   }
 };
 
-export const clearPersistedState = (
-  key: string = defaultStorageKey
-): void => {
+export const clearPersistedState = (key: string = defaultStorageKey): void => {
   if (!hasStorage()) {
     return;
   }

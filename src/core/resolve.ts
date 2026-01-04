@@ -1,9 +1,4 @@
-import {
-  AccessibilityOptions,
-  CircadianConfig,
-  ScheduleMode,
-  SystemPreferences
-} from "./types";
+import { AccessibilityOptions, CircadianConfig, ScheduleMode, SystemPreferences } from "./types";
 
 export const defaultAccessibility: AccessibilityOptions = {
   enforceContrast: true,

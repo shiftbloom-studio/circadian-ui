@@ -40,11 +40,7 @@ export function App({ children }: { children: React.ReactNode }) {
 import "./globals.css";
 import { CircadianProvider, CircadianScript } from "circadian-ui";
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
@@ -206,19 +202,19 @@ Circadian UI enforces WCAG-conscious contrast by default. Foreground tokens are 
 
 ## Design tokens
 
-| Token | CSS Variable |
-| --- | --- |
-| Background | `--cui-bg` |
-| Foreground | `--cui-fg` |
-| Muted | `--cui-muted` |
-| Muted Foreground | `--cui-muted-fg` |
-| Card | `--cui-card` |
-| Card Foreground | `--cui-card-fg` |
-| Border | `--cui-border` |
-| Ring | `--cui-ring` |
-| Accent | `--cui-accent` |
-| Accent Foreground | `--cui-accent-fg` |
-| Destructive | `--cui-destructive` |
+| Token                  | CSS Variable           |
+| ---------------------- | ---------------------- |
+| Background             | `--cui-bg`             |
+| Foreground             | `--cui-fg`             |
+| Muted                  | `--cui-muted`          |
+| Muted Foreground       | `--cui-muted-fg`       |
+| Card                   | `--cui-card`           |
+| Card Foreground        | `--cui-card-fg`        |
+| Border                 | `--cui-border`         |
+| Ring                   | `--cui-ring`           |
+| Accent                 | `--cui-accent`         |
+| Accent Foreground      | `--cui-accent-fg`      |
+| Destructive            | `--cui-destructive`    |
 | Destructive Foreground | `--cui-destructive-fg` |
 
 ## API reference

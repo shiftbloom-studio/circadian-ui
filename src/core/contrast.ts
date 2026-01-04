@@ -6,16 +6,11 @@ export interface ContrastOptions {
   maxIterations: number;
 }
 
-const clamp = (value: number, min = 0, max = 100) =>
-  Math.min(max, Math.max(min, value));
+const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
 
 const parseHsl = (value: string): [number, number, number] => {
   const [h, s, l] = value.split(" ");
-  return [
-    Number(h),
-    Number(s.replace("%", "")) / 100,
-    Number(l.replace("%", "")) / 100
-  ];
+  return [Number(h), Number(s.replace("%", "")) / 100, Number(l.replace("%", "")) / 100];
 };
 
 const hslToRgb = (h: number, s: number, l: number): [number, number, number] => {

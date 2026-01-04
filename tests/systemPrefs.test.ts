@@ -10,9 +10,7 @@ describe("system preferences", () => {
   it("detects prefers color scheme and contrast", () => {
     window.matchMedia = ((query: string) => {
       return {
-        matches:
-          query === "(prefers-color-scheme: dark)" ||
-          query === "(prefers-contrast: more)",
+        matches: query === "(prefers-color-scheme: dark)" || query === "(prefers-contrast: more)",
         media: query,
         onchange: null,
         addEventListener: () => undefined,
