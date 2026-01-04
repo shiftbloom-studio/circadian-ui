@@ -1,8 +1,8 @@
 # Circadian UI
 
-[![npm version](https://img.shields.io/npm/v/circadian-ui)](https://www.npmjs.com/package/circadian-ui)
-[![CI](https://github.com/circadian-ui/circadian-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/circadian-ui/circadian-ui/actions/workflows/ci.yml)
-[![license](https://img.shields.io/npm/l/circadian-ui)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@shiftbloom-studio/circadian-ui)](https://www.npmjs.com/package/@shiftbloom-studio/circadian-ui)
+[![CI](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/@shiftbloom-studio/circadian-ui)](LICENSE)
 
 Automatic, accessible, Tailwind-friendly time-of-day theming for React and Next.js. Circadian UI adapts your design tokens based on local time, optional sunrise/sunset data, system preferences, and user overrides — all while keeping contrast WCAG-conscious.
 
@@ -15,13 +15,13 @@ Automatic, accessible, Tailwind-friendly time-of-day theming for React and Next.
 ## Install
 
 ```bash
-npm install circadian-ui
+npm install @shiftbloom-studio/circadian-ui
 ```
 
 ## Quickstart (React)
 
 ```tsx
-import { CircadianProvider, CircadianScript } from "circadian-ui";
+import { CircadianProvider, CircadianScript } from "@shiftbloom-studio/circadian-ui";
 
 export function App({ children }: { children: React.ReactNode }) {
   return (
@@ -38,7 +38,7 @@ export function App({ children }: { children: React.ReactNode }) {
 ```tsx
 // app/layout.tsx
 import "./globals.css";
-import { CircadianProvider, CircadianScript } from "circadian-ui";
+import { CircadianProvider, CircadianScript } from "@shiftbloom-studio/circadian-ui";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```tsx
 // pages/_document.tsx
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import { CircadianScript } from "circadian-ui";
+import { CircadianScript } from "@shiftbloom-studio/circadian-ui";
 
 export default class MyDocument extends Document {
   render() {
@@ -115,7 +115,7 @@ export default config;
 // tailwind.config.ts
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
-import { circadianPlugin, circadianTailwindPreset } from "circadian-ui";
+import { circadianPlugin, circadianTailwindPreset } from "@shiftbloom-studio/circadian-ui";
 
 const config: Config = {
   presets: [circadianTailwindPreset()],
@@ -147,7 +147,7 @@ export default config;
 ### Manual override UI
 
 ```tsx
-import { useCircadian } from "circadian-ui";
+import { useCircadian } from "@shiftbloom-studio/circadian-ui";
 
 const ModeToggle = () => {
   const { mode, setMode, setPhaseOverride } = useCircadian();
@@ -164,7 +164,7 @@ const ModeToggle = () => {
 ### Sun-times provider
 
 ```ts
-import type { SunTimesProvider } from "circadian-ui";
+import type { SunTimesProvider } from "@shiftbloom-studio/circadian-ui";
 
 const provider: SunTimesProvider = (date) => {
   // Plug in your own sunrise/sunset provider
