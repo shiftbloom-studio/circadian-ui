@@ -1,6 +1,6 @@
 {
   "name": "circadian-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Accessible, time-aware theming for React and Next.js.",
   "keywords": [
     "react",
