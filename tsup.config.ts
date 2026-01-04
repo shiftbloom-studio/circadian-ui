@@ -6,7 +6,8 @@ const shared = {
   sourcemap: true,
   treeshake: true,
   splitting: false,
-  minify: false
+  minify: false,
+  external: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"]
 } as const;
 
 export default defineConfig([
