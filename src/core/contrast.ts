@@ -79,7 +79,7 @@ const ensurePairContrast = (
 
   const foregroundLum = relativeLuminance(foreground);
   const backgroundLum = relativeLuminance(background);
-  const moveDarker = foregroundLum >= backgroundLum;
+  const moveDarker = foregroundLum < backgroundLum;
   const step = moveDarker ? -2 : 2;
 
   for (let i = 0; i < options.maxIterations; i += 1) {
