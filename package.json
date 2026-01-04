@@ -1,15 +1,23 @@
 {
-  "name": "@your-scope/your-package",
-  "version": "0.0.0",
-  "description": "TODO: describe your package",
-  "keywords": [],
-  "homepage": "https://github.com/your-org/your-repo#readme",
+  "name": "circadian-ui",
+  "version": "0.1.0",
+  "description": "Accessible, time-aware theming for React and Next.js.",
+  "keywords": [
+    "react",
+    "nextjs",
+    "theme",
+    "accessibility",
+    "tailwind",
+    "wcag",
+    "design-tokens"
+  ],
+  "homepage": "https://github.com/circadian-ui/circadian-ui#readme",
   "bugs": {
-    "url": "https://github.com/your-org/your-repo/issues"
+    "url": "https://github.com/circadian-ui/circadian-ui/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/your-repo.git"
+    "url": "git+https://github.com/circadian-ui/circadian-ui.git"
   },
   "license": "MIT",
   "author": "",
@@ -41,6 +49,10 @@
     "LICENSE"
   ],
   "sideEffects": false,
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
