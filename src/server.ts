@@ -1,9 +1,2 @@
-/**
- * Optional secondary entrypoint (exported as `./server`).
- *
- * Replace/remove as needed.
- */
-export function isServerRuntime() {
-  return typeof window === "undefined";
-}
-
+export { createInlineScript, resolveInitialPhase } from "./core/script";
+export { defaultSchedule } from "./core/schedule";
