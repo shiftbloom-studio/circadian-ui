@@ -1,7 +1,7 @@
 # Circadian UI
 
 [![npm version](https://img.shields.io/npm/v/circadian-ui)](https://www.npmjs.com/package/circadian-ui)
-[![CI](https://github.com/circadian-ui/circadian-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/circadian-ui/circadian-ui/actions/workflows/ci.yml)
+[![CI](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/circadian-ui)](LICENSE)
 
 Automatic, accessible, Tailwind-friendly time-of-day theming for React and Next.js. Circadian UI adapts your design tokens based on local time, optional sunrise/sunset data, system preferences, and user overrides — all while keeping contrast WCAG-conscious.
