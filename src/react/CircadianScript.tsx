@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { CircadianConfig } from "../core/types";
 import { createInlineScript } from "../core/script";
 

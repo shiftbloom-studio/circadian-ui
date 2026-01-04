@@ -1,4 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode
+} from "react";
 import {
   CircadianConfig,
   CircadianState,
@@ -34,9 +43,7 @@ export interface CircadianContextValue extends CircadianState {
   isAuto: boolean;
 }
 
-const CircadianContext = React.createContext<CircadianContextValue | null>(
-  null
-);
+const CircadianContext = createContext<CircadianContextValue | null>(null);
 
 const getRootElement = (target: CircadianConfig["setAttributeOn"]): HTMLElement => {
   if (typeof document === "undefined") {
@@ -97,7 +104,7 @@ const computeNextChange = (
 
 export interface CircadianProviderProps {
   config?: CircadianConfig;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const CircadianProvider = ({
@@ -284,7 +291,7 @@ export const CircadianProvider = ({
 };
 
 export const useCircadianContext = () => {
-  const context = React.useContext(CircadianContext);
+  const context = useContext(CircadianContext);
   if (!context) {
     throw new Error("useCircadian must be used within a CircadianProvider");
   }
