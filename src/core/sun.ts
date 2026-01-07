@@ -1,5 +1,9 @@
 import { CircadianSchedule } from "./types";
-import { CircadianScheduleMinutes, getMinutesFromDate } from "./schedule";
+import {
+  CircadianScheduleMinutes,
+  computeNextTransitionFromMinutes,
+  getMinutesFromDate
+} from "./schedule";
 import { Phase, SunScheduleOptions, SunTimes, SunTimesProvider } from "./types";
 
 const minutesInDay = 24 * 60;
@@ -59,6 +63,15 @@ export const getPhaseFromSunTimes = (
     }
   }
   return "night";
+};
+
+export const computeNextSunTransition = (
+  date: Date,
+  sunTimes: SunTimes,
+  options?: Partial<SunScheduleOptions>
+): Date => {
+  const schedule = deriveSunSchedule(date, sunTimes, options);
+  return computeNextTransitionFromMinutes(date, schedule);
 };
 
 export const getScheduleFromProvider = (

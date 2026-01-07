@@ -68,12 +68,13 @@ const isWithinRange = (minutes: number, start: number, end: number): boolean => 
   return minutes >= start || minutes < end;
 };
 
-export const getPhaseFromTime = (date: Date, schedule?: Partial<CircadianSchedule>): Phase => {
-  const minutes = getMinutesFromDate(date);
-  const normalized = normalizeSchedule(schedule);
+export const getPhaseFromMinutes = (
+  minutes: number,
+  schedule: CircadianScheduleMinutes
+): Phase => {
   const phases: Phase[] = ["dawn", "day", "dusk", "night"];
   for (const phase of phases) {
-    const window = normalized[phase];
+    const window = schedule[phase];
     if (isWithinRange(minutes, window.start, window.end)) {
       return phase;
     }
@@ -81,11 +82,31 @@ export const getPhaseFromTime = (date: Date, schedule?: Partial<CircadianSchedul
   return "night";
 };
 
+export const getPhaseFromTime = (date: Date, schedule?: Partial<CircadianSchedule>): Phase => {
+  const minutes = getMinutesFromDate(date);
+  const normalized = normalizeSchedule(schedule);
+  return getPhaseFromMinutes(minutes, normalized);
+};
+
 export const computeNextTransition = (date: Date, schedule?: Partial<CircadianSchedule>): Date => {
   const normalized = normalizeSchedule(schedule);
-  const currentPhase = getPhaseFromTime(date, schedule);
+  const currentPhase = getPhaseFromMinutes(getMinutesFromDate(date), normalized);
   const minutes = getMinutesFromDate(date);
   const endMinutes = normalized[currentPhase].end;
+  let delta = endMinutes - minutes;
+  if (delta <= 0) {
+    delta += minutesInDay;
+  }
+  return new Date(date.getTime() + delta * 60 * 1000);
+};
+
+export const computeNextTransitionFromMinutes = (
+  date: Date,
+  schedule: CircadianScheduleMinutes
+): Date => {
+  const currentPhase = getPhaseFromMinutes(getMinutesFromDate(date), schedule);
+  const minutes = getMinutesFromDate(date);
+  const endMinutes = schedule[currentPhase].end;
   let delta = endMinutes - minutes;
   if (delta <= 0) {
     delta += minutesInDay;

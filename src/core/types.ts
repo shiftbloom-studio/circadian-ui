@@ -1,5 +1,5 @@
 export type Phase = "dawn" | "day" | "dusk" | "night";
-export type ScheduleMode = "time" | "sun" | "manual";
+export type ScheduleMode = "time" | "sun" | "manual" | "auto";
 
 export interface PhaseWindow {
   start: string; // HH:MM
@@ -67,6 +67,7 @@ export interface CircadianConfig {
   mode?: ScheduleMode;
   sunTimesProvider?: SunTimesProvider;
   sunSchedule?: Partial<SunScheduleOptions>;
+  initialPhase?: Phase;
   persist?: boolean;
   storageKey?: string;
   accessibility?: Partial<AccessibilityOptions>;
