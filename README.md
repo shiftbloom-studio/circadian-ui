@@ -4,13 +4,17 @@
 [![CI](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/@shiftbloom-studio/circadian-ui)](LICENSE)
 
-Automatic, accessible, Tailwind-friendly time-of-day theming for React and Next.js. Circadian UI adapts your design tokens based on local time, optional sunrise/sunset data, system preferences, and user overrides — all while keeping contrast WCAG-conscious.
+**Circadian UI** is a production‑ready, time‑aware theming engine for React and Tailwind. It adapts your design tokens across dawn/day/dusk/night based on local time, optional sunrise/sunset data, system preferences, and user overrides — while enforcing accessible contrast.
 
-## Why this matters
+## What makes it special
 
-- **Readable at any hour**: avoid low-contrast screens at night or overly-bright palettes at dawn.
-- **Reduced eye strain**: thoughtful shifts in luminance and contrast help users stay comfortable.
-- **Consistent branding**: keep your token system intact while letting Circadian UI handle timing and accessibility.
+- **Zero‑config start** — install, wrap your app, and you’re done.
+- **Circadian magic** — automatic phase shifts based on time or sun data.
+- **Accessible by default** — WCAG‑conscious contrast adjustments.
+- **Framework‑friendly** — Next.js (App/Pages), Vite, SSR or CSR.
+- **Tailwind‑native** — tokens exposed as CSS variables + preset/plugin.
+
+---
 
 ## Install
 
@@ -18,7 +22,9 @@ Automatic, accessible, Tailwind-friendly time-of-day theming for React and Next.
 npm install @shiftbloom-studio/circadian-ui
 ```
 
-## Quickstart (React)
+---
+
+## 30‑second quickstart (React)
 
 ```tsx
 import { CircadianProvider, CircadianScript } from "@shiftbloom-studio/circadian-ui";
@@ -33,7 +39,13 @@ export function App({ children }: { children: React.ReactNode }) {
 }
 ```
 
-## Next.js (App Router)
+> `CircadianScript` prevents theme flash by setting the initial phase before hydration.
+
+---
+
+## Next.js
+
+### App Router
 
 ```tsx
 // app/layout.tsx
@@ -52,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-## Next.js (Pages Router)
+### Pages Router
 
 ```tsx
 // pages/_document.tsx
@@ -76,9 +88,30 @@ export default class MyDocument extends Document {
 }
 ```
 
-## Tailwind setup
+---
 
-### CSS variables only (recommended)
+## Vite / CSR apps
+
+```tsx
+import { createRoot } from "react-dom/client";
+import { CircadianProvider, CircadianScript } from "@shiftbloom-studio/circadian-ui";
+import App from "./App";
+
+createRoot(document.getElementById("root")!).render(
+  <>
+    <CircadianScript />
+    <CircadianProvider>
+      <App />
+    </CircadianProvider>
+  </>
+);
+```
+
+---
+
+## Tailwind integration
+
+### Option A — CSS variables (recommended)
 
 ```ts
 // tailwind.config.ts
@@ -109,7 +142,7 @@ const config: Config = {
 export default config;
 ```
 
-### Tailwind preset + plugin
+### Option B — Preset + Plugin
 
 ```ts
 // tailwind.config.ts
@@ -125,9 +158,11 @@ const config: Config = {
 export default config;
 ```
 
+---
+
 ## Configuration examples
 
-### Custom time windows
+### 1) Custom schedule windows
 
 ```tsx
 <CircadianProvider
@@ -144,30 +179,12 @@ export default config;
 </CircadianProvider>
 ```
 
-### Manual override UI
-
-```tsx
-import { useCircadian } from "@shiftbloom-studio/circadian-ui";
-
-const ModeToggle = () => {
-  const { mode, setMode, setPhaseOverride } = useCircadian();
-  return (
-    <div>
-      <button onClick={() => setMode("time")}>Auto</button>
-      <button onClick={() => setPhaseOverride("night")}>Night</button>
-      <span>Current mode: {mode}</span>
-    </div>
-  );
-};
-```
-
-### Sun-times provider
+### 2) Sun‑aware schedule
 
 ```ts
 import type { SunTimesProvider } from "@shiftbloom-studio/circadian-ui";
 
 const provider: SunTimesProvider = (date) => {
-  // Plug in your own sunrise/sunset provider
   return {
     sunrise: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 12),
     sunset: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 19, 48)
@@ -177,13 +194,45 @@ const provider: SunTimesProvider = (date) => {
 <CircadianProvider config={{ mode: "sun", sunTimesProvider: provider }} />;
 ```
 
-### Disable persistence
+### 3) Auto mode (recommended)
+
+```tsx
+<CircadianProvider config={{ mode: "auto", sunTimesProvider: provider }} />
+```
+
+If sun data is available, it uses `sun`; otherwise it falls back to `time`.
+
+### 4) Manual override UI
+
+```tsx
+import { useCircadian } from "@shiftbloom-studio/circadian-ui";
+
+const ModeToggle = () => {
+  const { mode, resolvedMode, setMode, setPhaseOverride } = useCircadian();
+  return (
+    <div>
+      <button onClick={() => setMode("auto")}>Auto</button>
+      <button onClick={() => setPhaseOverride("night")}>Night</button>
+      <p>Requested: {mode}</p>
+      <p>Resolved: {resolvedMode}</p>
+    </div>
+  );
+};
+```
+
+### 5) Initial phase hint (SSR)
+
+```tsx
+<CircadianScript config={{ initialPhase: "night" }} />
+```
+
+### 6) Disable persistence
 
 ```tsx
 <CircadianProvider config={{ persist: false }} />
 ```
 
-### Strict contrast mode
+### 7) Strict contrast tuning
 
 ```tsx
 <CircadianProvider
@@ -196,9 +245,7 @@ const provider: SunTimesProvider = (date) => {
 />
 ```
 
-## Accessibility notes
-
-Circadian UI enforces WCAG-conscious contrast by default. Foreground tokens are nudged in lightness until they meet the configured ratio. You can tune ratios for normal and large text via `accessibility.minimumRatio` and `accessibility.largeTextRatio`.
+---
 
 ## Design tokens
 
@@ -217,15 +264,17 @@ Circadian UI enforces WCAG-conscious contrast by default. Foreground tokens are 
 | Destructive            | `--cui-destructive`    |
 | Destructive Foreground | `--cui-destructive-fg` |
 
+---
+
 ## API reference
 
 ### React
 
 - `CircadianProvider`
   - Props: `{ config?: CircadianConfig; children: React.ReactNode }`
-  - Sets `data-cui-phase` and CSS vars on the document root.
+  - Applies phase + tokens to the document root (or body).
 - `useCircadian()`
-  - Returns `{ phase, mode, setMode, setPhaseOverride, clearOverride, tokens, isAuto, nextChangeAt }`.
+  - Returns `{ phase, mode, resolvedMode, setMode, setPhaseOverride, clearOverride, tokens, isAuto, nextChangeAt }`.
 - `useCircadianTokens()`
   - Returns `{ tokens, cssVars, applyToStyle }` for inline usage.
 - `CircadianScript`
@@ -245,15 +294,18 @@ Circadian UI enforces WCAG-conscious contrast by default. Foreground tokens are 
 - `circadianTailwindPreset()`
 - `circadianPlugin()` (wrap with `tailwindcss/plugin`)
 
+---
+
 ## Configuration schema
 
 ```ts
 interface CircadianConfig {
   schedule?: Partial<CircadianSchedule>;
   tokens?: Partial<Record<Phase, Partial<CircadianTokens>>>;
-  mode?: "time" | "sun" | "manual";
+  mode?: "time" | "sun" | "manual" | "auto";
   sunTimesProvider?: SunTimesProvider;
   sunSchedule?: Partial<SunScheduleOptions>;
+  initialPhase?: Phase;
   persist?: boolean;
   storageKey?: string;
   accessibility?: Partial<AccessibilityOptions>;
@@ -263,6 +315,14 @@ interface CircadianConfig {
   setAttributeOn?: "html" | "body";
 }
 ```
+
+---
+
+## Accessibility notes
+
+Circadian UI nudges foreground tokens until they meet your configured contrast ratio. You can tune ratios for normal and large text via `accessibility.minimumRatio` and `accessibility.largeTextRatio`.
+
+---
 
 ## Development
 

@@ -29,7 +29,7 @@ export const resolveMode = (
   system: SystemPreferences,
   config?: CircadianConfig
 ): ScheduleMode => {
-  return userMode ?? config?.mode ?? "time";
+  return userMode ?? config?.mode ?? "auto";
 };
 
 export const resolveAccessibility = (

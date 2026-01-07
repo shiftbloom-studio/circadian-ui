@@ -14,12 +14,14 @@ const getMergedSchedule = (schedule?: Partial<CircadianSchedule>): CircadianSche
   night: { ...defaultSchedule.night, ...schedule?.night }
 });
 
-const getMode = (mode?: ScheduleMode): ScheduleMode => mode ?? "time";
+const getMode = (mode?: ScheduleMode): ScheduleMode => mode ?? "auto";
 
 export const createInlineScript = (config?: CircadianConfig): string => {
   const schedule = getMergedSchedule(config?.schedule);
   const storageKey = config?.storageKey ?? defaultStorageKey;
   const persist = config?.persist !== false;
+  const initialPhase = config?.initialPhase ?? null;
+  const setAttributeOn = config?.setAttributeOn ?? "html";
   const tokens = {
     dawn: tokensToCssVars({
       ...defaultTokens.dawn,
@@ -46,6 +48,8 @@ export const createInlineScript = (config?: CircadianConfig): string => {
     const storageKey = ${serialize(storageKey)};
     const persist = ${serialize(persist)};
     const fallbackMode = ${serialize(getMode(config?.mode))};
+    const initialPhase = ${serialize(initialPhase)};
+    const setAttributeOn = ${serialize(setAttributeOn)};
     const now = new Date();
     const minutes = now.getHours() * 60 + now.getMinutes();
 
@@ -68,12 +72,14 @@ export const createInlineScript = (config?: CircadianConfig): string => {
     };
 
     const order = ["dawn", "day", "dusk", "night"];
-    let phase = "night";
-    for (const key of order) {
-      const window = normalized[key];
-      if (isWithin(minutes, window.start, window.end)) {
-        phase = key;
-        break;
+    let phase = initialPhase || "night";
+    if (!initialPhase) {
+      for (const key of order) {
+        const window = normalized[key];
+        if (isWithin(minutes, window.start, window.end)) {
+          phase = key;
+          break;
+        }
       }
     }
 
@@ -89,7 +95,8 @@ export const createInlineScript = (config?: CircadianConfig): string => {
       }
     }
 
-    const root = document.documentElement;
+    const root =
+      setAttributeOn === "body" && document.body ? document.body : document.documentElement;
     root.setAttribute("data-cui-phase", phase);
     const vars = tokens[phase] || tokens.night;
     for (const key in vars) {

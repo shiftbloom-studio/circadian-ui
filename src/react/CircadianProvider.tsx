@@ -13,10 +13,11 @@ import {
   CircadianState,
   Phase,
   ScheduleMode,
+  SunTimes,
   SystemPreferences
 } from "../core/types";
-import { getPhaseFromTime, computeNextTransition } from "../core/schedule";
-import { getPhaseFromSunTimes, getScheduleFromProvider } from "../core/sun";
+import { computeNextTransition, getPhaseFromTime } from "../core/schedule";
+import { computeNextSunTransition, getPhaseFromSunTimes } from "../core/sun";
 import { applyColorSchemeBias, applyTokensToElement, resolveTokens } from "../core/tokens";
 import { ensureContrast } from "../core/contrast";
 import { loadPersistedState, persistState } from "../core/storage";
@@ -34,6 +35,7 @@ export interface CircadianContextValue extends CircadianState {
   setPhaseOverride: (phase: Phase) => void;
   clearOverride: () => void;
   isAuto: boolean;
+  resolvedMode: ScheduleMode;
 }
 
 const CircadianContext = createContext<CircadianContextValue | null>(null);
@@ -60,16 +62,14 @@ const computePhase = (
   date: Date,
   mode: ScheduleMode,
   config: CircadianConfig,
-  phaseOverride: Phase | null
+  phaseOverride: Phase | null,
+  sunTimes: SunTimes | null
 ): Phase => {
   if (mode === "manual" && phaseOverride) {
     return phaseOverride;
   }
-  if (mode === "sun") {
-    const sunTimes = config.sunTimesProvider?.(date);
-    if (sunTimes) {
-      return getPhaseFromSunTimes(date, sunTimes, config.sunSchedule);
-    }
+  if (mode === "sun" && sunTimes) {
+    return getPhaseFromSunTimes(date, sunTimes, config.sunSchedule);
   }
   return getPhaseFromTime(date, config.schedule);
 };
@@ -77,16 +77,14 @@ const computePhase = (
 const computeNextChange = (
   date: Date,
   mode: ScheduleMode,
-  config: CircadianConfig
+  config: CircadianConfig,
+  sunTimes: SunTimes | null
 ): Date | null => {
   if (mode === "manual") {
     return null;
   }
-  if (mode === "sun") {
-    const schedule = getScheduleFromProvider(date, config.sunTimesProvider, config.sunSchedule);
-    if (schedule) {
-      return computeNextTransition(date, schedule);
-    }
+  if (mode === "sun" && sunTimes) {
+    return computeNextSunTransition(date, sunTimes, config.sunSchedule);
   }
   return computeNextTransition(date, config.schedule);
 };
@@ -105,19 +103,20 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
     typeof window !== "undefined" && shouldPersist ? loadPersistedState(storageKey) : null;
 
   const [mode, setModeState] = useState<ScheduleMode>(
-    initialPersisted?.mode ?? config.mode ?? "time"
+    initialPersisted?.mode ?? config.mode ?? "auto"
   );
   const [phaseOverride, setPhaseOverrideState] = useState<Phase | null>(
     initialPersisted?.phase ?? null
   );
 
   const [phase, setPhase] = useState<Phase>(() =>
-    computePhase(new Date(), mode, config, phaseOverride)
+    config.initialPhase ?? computePhase(new Date(), mode, config, phaseOverride, null)
   );
 
   const [nextChangeAt, setNextChangeAt] = useState<Date | null>(() =>
-    computeNextChange(new Date(), mode, config)
+    computeNextChange(new Date(), mode, config, null)
   );
+  const [resolvedMode, setResolvedMode] = useState<ScheduleMode>(mode);
 
   const timerRef = useRef<number | null>(null);
 
@@ -148,20 +147,45 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
     colorBias
   ]);
 
+  const resolveModeWithSun = useCallback(
+    (date: Date): { resolvedMode: ScheduleMode; sunTimes: SunTimes | null } => {
+      const desiredMode = resolveMode(mode, systemPrefs, config);
+      if (desiredMode === "auto") {
+        if (config.sunTimesProvider) {
+          const sunTimes = config.sunTimesProvider(date);
+          if (sunTimes) {
+            return { resolvedMode: "sun", sunTimes };
+          }
+        }
+        return { resolvedMode: "time", sunTimes: null };
+      }
+      if (desiredMode === "sun") {
+        const sunTimes = config.sunTimesProvider?.(date) ?? null;
+        if (!sunTimes) {
+          return { resolvedMode: "time", sunTimes: null };
+        }
+        return { resolvedMode: "sun", sunTimes };
+      }
+      return { resolvedMode: desiredMode, sunTimes: null };
+    },
+    [mode, systemPrefs, config]
+  );
+
   const updatePhase = useCallback(() => {
     const now = new Date();
-    const resolvedMode = resolveMode(mode, systemPrefs, config);
-    const nextPhase = computePhase(now, resolvedMode, config, phaseOverride);
+    const { resolvedMode, sunTimes } = resolveModeWithSun(now);
+    const nextPhase = computePhase(now, resolvedMode, config, phaseOverride, sunTimes);
+    setResolvedMode(resolvedMode);
     setPhase(nextPhase);
-    setNextChangeAt(computeNextChange(now, resolvedMode, config));
-  }, [mode, systemPrefs, config, phaseOverride]);
+    setNextChangeAt(computeNextChange(now, resolvedMode, config, sunTimes));
+  }, [config, phaseOverride, resolveModeWithSun]);
 
   useEffect(() => {
     updatePhase();
   }, [updatePhase]);
 
   useEffect(() => {
-    if (mode === "manual") {
+    if (resolvedMode === "manual") {
       return;
     }
     if (timerRef.current) {
@@ -179,7 +203,7 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
         window.clearTimeout(timerRef.current);
       }
     };
-  }, [mode, nextChangeAt, updatePhase]);
+  }, [resolvedMode, nextChangeAt, updatePhase]);
 
   useEffect(() => {
     const root = getRootElement(config.setAttributeOn);
@@ -240,8 +264,8 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
 
   const clearOverride = useCallback(() => {
     setPhaseOverrideState(null);
-    setModeState("time");
-  }, []);
+    setModeState(config.mode ?? "auto");
+  }, [config.mode]);
 
   const contextValue = useMemo<CircadianContextValue>(
     () => ({
@@ -252,9 +276,10 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
       setMode,
       setPhaseOverride,
       clearOverride,
-      isAuto: mode !== "manual"
+      isAuto: mode !== "manual",
+      resolvedMode
     }),
-    [phase, mode, tokens, nextChangeAt, setMode, setPhaseOverride, clearOverride]
+    [phase, mode, tokens, nextChangeAt, setMode, setPhaseOverride, clearOverride, resolvedMode]
   );
 
   return <CircadianContext.Provider value={contextValue}>{children}</CircadianContext.Provider>;
