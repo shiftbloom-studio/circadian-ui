@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+### Patch Changes
+
+- f0055aa: Refresh the build and CI toolchain to the latest stable releases and add the minimal TypeScript 6 migration settings required for tests and declaration builds.
+
 ## 0.2.0
 
 ### Minor Changes
