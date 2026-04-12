@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+### Patch Changes
+
+- c3c9696: Switch the package license from MIT to Apache-2.0.
+
 ## 0.2.1
 
 ### Patch Changes
