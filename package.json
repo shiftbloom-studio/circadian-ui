@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/shiftbloom-studio/circadian-ui.git"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "",
   "publishConfig": {
     "access": "public"
