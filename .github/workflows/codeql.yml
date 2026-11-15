@@ -16,9 +16,7 @@ permissions:
 jobs:
   analyze:
     name: Analyze
-    runs-on:
-      group: Default
-      labels: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       security-events: write
