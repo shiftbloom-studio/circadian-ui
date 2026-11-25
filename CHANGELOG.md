@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- d6360b0: Relicense under AGPL-3.0-or-later. Versions up to and including 0.2.2 remain available under the Apache License 2.0.
+
 ## 0.2.2
 
 ### Patch Changes
