@@ -333,3 +333,9 @@ npm run typecheck
 npm run test
 npm run build
 ```
+
+---
+
+## License
+
+[AGPL-3.0-or-later](./LICENSE). Versions up to and including 0.2.2 were released under Apache-2.0 and stay available under that license.
