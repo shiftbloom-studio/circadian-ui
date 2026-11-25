@@ -4,15 +4,15 @@
 [![CI](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/shiftbloom-studio/circadian-ui/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/@shiftbloom-studio/circadian-ui)](LICENSE)
 
-**Circadian UI** is a production‑ready, time‑aware theming engine for React and Tailwind. It adapts your design tokens across dawn/day/dusk/night based on local time, optional sunrise/sunset data, system preferences, and user overrides — while enforcing accessible contrast.
+**Circadian UI** is a production‑ready, time‑aware theming engine for React and Tailwind. It adapts your design tokens across dawn/day/dusk/night based on local time, optional sunrise/sunset data, system preferences, and user overrides - while enforcing accessible contrast.
 
 ## What makes it special
 
-- **Zero‑config start** — install, wrap your app, and you’re done.
-- **Circadian magic** — automatic phase shifts based on time or sun data.
-- **Accessible by default** — WCAG‑conscious contrast adjustments.
-- **Framework‑friendly** — Next.js (App/Pages), Vite, SSR or CSR.
-- **Tailwind‑native** — tokens exposed as CSS variables + preset/plugin.
+- **Zero‑config start** - install, wrap your app, and you’re done.
+- **Circadian magic** - automatic phase shifts based on time or sun data.
+- **Accessible by default** - WCAG‑conscious contrast adjustments.
+- **Framework‑friendly** - Next.js (App/Pages), Vite, SSR or CSR.
+- **Tailwind‑native** - tokens exposed as CSS variables + preset/plugin.
 
 ---
 
@@ -111,7 +111,7 @@ createRoot(document.getElementById("root")!).render(
 
 ## Tailwind integration
 
-### Option A — CSS variables (recommended)
+### Option A - CSS variables (recommended)
 
 ```ts
 // tailwind.config.ts
@@ -142,7 +142,7 @@ const config: Config = {
 export default config;
 ```
 
-### Option B — Preset + Plugin
+### Option B - Preset + Plugin
 
 ```ts
 // tailwind.config.ts
