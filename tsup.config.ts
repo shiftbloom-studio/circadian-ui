@@ -24,5 +24,12 @@ export default defineConfig([
       server: "src/server.ts"
     },
     clean: false
+  },
+  {
+    ...shared,
+    entry: {
+      devtools: "src/devtools.ts"
+    },
+    clean: false
   }
 ]);
