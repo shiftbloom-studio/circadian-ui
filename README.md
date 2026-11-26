@@ -274,7 +274,7 @@ const ModeToggle = () => {
   - Props: `{ config?: CircadianConfig; children: React.ReactNode }`
   - Applies phase + tokens to the document root (or body).
 - `useCircadian()`
-  - Returns `{ phase, mode, resolvedMode, setMode, setPhaseOverride, clearOverride, tokens, isAuto, nextChangeAt }`.
+  - Returns `{ phase, mode, resolvedMode, setMode, setPhaseOverride, timeOverride, setTimeOverride, clearOverride, tokens, isAuto, nextChangeAt }`.
 - `useCircadianTokens()`
   - Returns `{ tokens, cssVars, applyToStyle }` for inline usage.
 - `CircadianScript`
@@ -295,6 +295,30 @@ const ModeToggle = () => {
 - `circadianPlugin()` (wrap with `tailwindcss/plugin`)
 
 ---
+
+## Time travel preview (dev only)
+
+Scrub through the day and watch the theme change, without waiting for the real time. Import the panel from the devtools entry point and render it inside the provider:
+
+```tsx
+import { CircadianProvider } from "@shiftbloom-studio/circadian-ui";
+import { CircadianTimeTravel } from "@shiftbloom-studio/circadian-ui/devtools";
+
+export function App({ children }: { children: React.ReactNode }) {
+  return (
+    <CircadianProvider>
+      {children}
+      <CircadianTimeTravel />
+    </CircadianProvider>
+  );
+}
+```
+
+Dragging the slider sets a clock override on the provider, so the phase, tokens and transitions follow the slider time through the same code as real time, including sun mode. The play button runs through a full day in about 20 seconds. "Back to real time" clears the override; closing the panel clears it too, so the app returns to the real time without a reload.
+
+The colored bands under the slider show the phase windows of the time schedule (`schedule` prop, same shape as `config.schedule`). They are hidden in sun or manual mode, where the time schedule does not describe the windows.
+
+The panel lives in a separate entry point, so it is tree-shaken out of builds that do not import it. It is meant for development only: do not ship it in production.
 
 ## Configuration schema
 
