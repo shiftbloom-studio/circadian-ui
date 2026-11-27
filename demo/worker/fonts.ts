@@ -11,13 +11,21 @@ const YEAR = "public, max-age=31536000, immutable";
 
 const proxied = (u: string) => `/fonts/x?u=${encodeURIComponent(u)}`;
 
+const monoFaces = () =>
+  [400, 500]
+    .map(
+      (w) =>
+        `@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:${w};font-display:swap;src:url('${proxied(MONO(w))}') format('woff2')}\n`
+    )
+    .join("");
+
 async function cached(req: Request, ctx: ExecutionContext, build: () => Promise<Response>) {
   const cache = (caches as unknown as { default: Cache }).default;
   const key = new Request(new URL(req.url).toString(), { method: "GET" });
   const hit = await cache.match(key);
   if (hit) return hit;
   const res = await build();
-  if (res.ok) ctx.waitUntil(cache.put(key, res.clone()));
+  if (res.ok && res.headers.get("cache-control") !== "no-store") ctx.waitUntil(cache.put(key, res.clone()));
   return res;
 }
 
@@ -32,12 +40,16 @@ export async function handleFonts(req: Request, ctx: ExecutionContext): Promise<
       } catch {
         // Fall back to system fonts; the page still works.
       }
+      if (!css)
+        // Fontshare is down: serve the mono faces only and don't let anything cache this fallback.
+        return new Response(monoFaces(), {
+          headers: { "content-type": "text/css; charset=utf-8", "cache-control": "no-store" }
+        });
       css = css.replace(
         /url\((['"]?)(?:https?:)?\/\/(cdn\.fontshare\.com\/[^'")]+)\1\)/g,
         (_m, _q, path) => `url('${proxied("https://" + path)}')`
       );
-      for (const w of [400, 500])
-        css += `@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:${w};font-display:swap;src:url('${proxied(MONO(w))}') format('woff2')}\n`;
+      css += monoFaces();
       return new Response(css, {
         headers: { "content-type": "text/css; charset=utf-8", "cache-control": "public, max-age=86400" }
       });

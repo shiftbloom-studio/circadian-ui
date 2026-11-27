@@ -49,7 +49,7 @@ export default {
     const kind = LEGAL_PATHS[url.pathname];
     if (kind && get) {
       if (!legal) {
-        const page = await env.ASSETS.fetch(new Request(new URL("/404.html", url), req));
+        const page = await env.ASSETS.fetch(new Request(new URL("/404", url), req));
         return withSecurity(new Response(page.body, { status: 404, headers: page.headers }));
       }
       return withSecurity(
