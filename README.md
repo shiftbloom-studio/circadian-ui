@@ -6,6 +6,8 @@
 
 **Circadian UI** is a production‑ready, time‑aware theming engine for React and Tailwind. It adapts your design tokens across dawn/day/dusk/night based on local time, optional sunrise/sunset data, system preferences, and user overrides - while enforcing accessible contrast.
 
+**Live demo:** [circadian.shiftbloom.studio](https://circadian.shiftbloom.studio): scrub through a day and watch the whole page change with it, try real sunrise times for eight cities and break the contrast on purpose to watch it get fixed.
+
 ## What makes it special
 
 - **Zero‑config start** - install, wrap your app, and you’re done.
@@ -332,6 +334,19 @@ npm run lint
 npm run typecheck
 npm run test
 npm run build
+```
+
+---
+
+## Demo site
+
+The demo lives in [`demo/`](./demo): a Vite + React app that imports the library straight from `src/`, served by a small Cloudflare Worker (static assets, legal pages, self-hosted fonts).
+
+```bash
+cd demo
+npm ci
+npm run dev      # Vite dev server
+npm run preview  # production build in wrangler dev
 ```
 
 ---

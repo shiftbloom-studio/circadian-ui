@@ -1,0 +1,30 @@
+// circadian-ui demo: a static Vite build served from Workers static assets, plus a small Worker
+// for the legal pages and self-hosted fonts. Build with `npm run build` before deploying.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "circadian-ui-demo",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-11-01",
+  "observability": { "enabled": true },
+
+  // Serve on your own (sub)domain. The zone must be on the same Cloudflare account.
+  // "routes": [{ "pattern": "circadian.example.com", "custom_domain": true }],
+  // No workers.dev or preview URLs: they bypass the zone's WAF and rate limiting rules.
+  "workers_dev": false,
+  "preview_urls": false,
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // The Worker runs first for the start page (to drop the legal links when LEGAL is unset),
+    // the legal pages and the font proxy. Everything else comes straight from the asset store.
+    "run_worker_first": ["/", "/index.html", "/privacy", "/datenschutz", "/imprint", "/impressum", "/fonts/*"]
+  }
+
+  // Optional: operator details for /imprint, /impressum, /privacy and /datenschutz (the pages and their
+  // footer links are hidden while it is unset). Set it in the dashboard or as a var:
+  // "vars": {
+  //   "LEGAL": "{\"name\":\"Jane Doe\",\"street\":\"Example St 1\",\"city\":\"12345 Town\",\"country\":{\"en\":\"Germany\",\"de\":\"Deutschland\"},\"email\":\"jane@example.com\",\"authority\":\"Your data protection authority, address\"}"
+  // }
+}
