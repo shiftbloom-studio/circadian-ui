@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 /** Imprint and privacy policy in English and German. Operator details come from the LEGAL var; nothing personal is hardcoded. */
-import { bloomSvg, faviconSvg } from "../src/bloom";
 
 export type LegalInfo = {
   name: string;
@@ -37,13 +36,13 @@ export function parseLegal(raw: string | undefined): LegalInfo | null {
   }
 }
 
-const CSS = `:root{--paper:#F6F1EE;--ink:#1A1216;--ink62:rgba(26,18,22,.64);--line:#E4DADB;--root:#C81040;--bloom:#FF2E52}
+const CSS = `:root{--paper:#F5FAFE;--ink:#121A2B;--ink62:rgba(18,26,43,.68);--line:#D3E0EA;--root:#0F5BB8}
 *{box-sizing:border-box}html{background:var(--paper);color:var(--ink)}
 body{margin:0;font:400 17px/1.65 "General Sans",ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1120px;margin:0 auto;padding:20px clamp(20px,4vw,40px) 48px}
 header{display:flex;align-items:center;justify-content:space-between;padding:4px 0 20px;border-bottom:1px solid var(--line)}
-.brand{display:inline-flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font:600 1.25rem/1.4 "Clash Display",ui-sans-serif,system-ui,sans-serif;letter-spacing:-.02em}
-.brand i{font-style:normal;color:var(--bloom)}
+.brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font:600 22px/1 "Clash Display",ui-sans-serif,system-ui,sans-serif;letter-spacing:-.03em}
+.dot{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#ffb36b 0 50%,#1b2452 50% 100%)}
 main{max-width:44em;padding:clamp(28px,5vw,56px) 0 0}
 h1,h2{font-family:"Clash Display",ui-sans-serif,system-ui,sans-serif;font-weight:600;letter-spacing:-.02em;line-height:1.15}
 h1{font-size:clamp(32px,4.6vw,48px);margin:12px 0 0}h2{font-size:22px;margin:36px 0 10px}
@@ -52,7 +51,7 @@ a{color:var(--root);text-underline-offset:3px}a:hover{color:var(--ink)}
 .label{font:500 12px/1.4 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.16em;text-transform:lowercase;color:var(--ink62)}
 .meta{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 28px;font-size:14px;color:var(--ink62)}
 footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--ink62)}
-::selection{background:#FFE9EF}`;
+::selection{background:#D6ECFF}`;
 
 export function legalPage(kind: LegalKind, l: LegalInfo): string {
   const de = kind === "datenschutz" || kind === "impressum";
@@ -63,13 +62,12 @@ export function legalPage(kind: LegalKind, l: LegalInfo): string {
   const mail = `<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`;
   const address = `<address>${esc(l.name)}<br>${l.business ? `${esc(l.business)}<br>` : ""}${esc(l.street)}<br>${esc(l.city)}<br>${esc(l.country[lang])}</address>`;
   const body = isPrivacy ? (de ? privacyDe(address, mail, l) : privacyEn(address, mail, l)) : imprint(de, address, mail, l);
-  const favicon = `data:image/svg+xml,${encodeURIComponent(faviconSvg())}`;
   const links = de
     ? `<a href="/">Zur Demo</a> · <a href="/datenschutz">Datenschutz</a> · <a href="/impressum">Impressum</a>`
     : `<a href="/">Back to the demo</a> · <a href="/privacy">Privacy</a> · <a href="/imprint">Imprint</a>`;
   return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title} · circadian-ui</title><link rel="icon" href="${favicon}"><link rel="stylesheet" href="/fonts/fonts.css"><style>${CSS}</style></head>
-<body><div class="wrap"><header><a class="brand" href="/" aria-label="circadian-ui demo">${bloomSvg({ size: 30, id: "lg" })}<span>circadian-ui<i>.</i></span></a></header>
+<title>${title} · circadian-ui</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/fonts/fonts.css"><style>${CSS}</style></head>
+<body><div class="wrap"><header><a class="brand" href="/" aria-label="circadian-ui demo"><span class="dot" aria-hidden="true"></span><span>circadian</span></a></header>
 <main><span class="label">${de ? "circadian-ui rechtliches" : "circadian-ui legal"}</span><h1>${title}</h1>
 <div class="meta">${isPrivacy ? `<span>${UPDATED[lang]}</span>` : ""}<a href="${other}" hreflang="${de ? "en" : "de"}">${de ? "English" : "Deutsch"}</a></div>
 ${body}

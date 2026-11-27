@@ -2,7 +2,7 @@
 
 The interactive demo behind [circadian.shiftbloom.studio](https://circadian.shiftbloom.studio). It imports circadian-ui from `../src`, so it always shows the code in this repository.
 
-- `src/`: the Vite + React app (dial, themed panel, contrast lab, live provider readout)
+- `src/`: the Vite + React app (sky hero and timeline, themed notes app, four-phase strip, contrast lab, live provider readout)
 - `src/sky.ts`: sunrise and sunset for the demo cities, calculated in the browser
 - `worker/`: Cloudflare Worker that serves the build from static assets and adds security headers, the imprint and privacy pages and a font proxy, so visitors never contact a font CDN
 

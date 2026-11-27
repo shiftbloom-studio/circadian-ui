@@ -2,74 +2,82 @@
 import type { CircadianTokens, Phase } from "@shiftbloom-studio/circadian-ui";
 
 /**
- * The shiftbloom token set: the paper, ink and reds of the studio's brand book, stretched over four
- * phases. Passed to circadian-ui as `config.tokens`, exactly as you would pass your own.
+ * The demo's own token set, passed to circadian-ui as `config.tokens` exactly as you would pass yours:
+ * apricot mornings, clear blue days, violet evenings and a deep navy night.
  */
-export const shiftbloomTokens: Record<Phase, CircadianTokens> = {
+export const circadianTokens: Record<Phase, CircadianTokens> = {
   dawn: {
-    bg: "350 60% 96%",
-    fg: "330 18% 9%",
-    muted: "350 42% 91%",
-    mutedFg: "330 10% 33%",
-    card: "24 38% 98%",
-    cardFg: "330 18% 9%",
-    border: "350 30% 85%",
-    ring: "344 85% 42%",
-    accent: "344 100% 92%",
-    accentFg: "344 85% 32%",
-    destructive: "350 80% 42%",
+    bg: "28 80% 95%",
+    fg: "260 30% 14%",
+    muted: "28 62% 89%",
+    mutedFg: "260 15% 30%",
+    card: "30 100% 98%",
+    cardFg: "260 30% 14%",
+    border: "25 40% 82%",
+    ring: "14 85% 50%",
+    accent: "14 100% 90%",
+    accentFg: "14 80% 30%",
+    destructive: "354 75% 46%",
     destructiveFg: "0 0% 100%"
   },
   day: {
-    bg: "23 31% 95%",
-    fg: "330 18% 9%",
-    muted: "20 26% 91%",
-    mutedFg: "330 8% 35%",
-    card: "24 38% 97%",
-    cardFg: "330 18% 9%",
-    border: "354 16% 87%",
-    ring: "344 85% 42%",
-    accent: "344 100% 95%",
-    accentFg: "344 85% 36%",
-    destructive: "344 85% 42%",
+    bg: "200 40% 97%",
+    fg: "222 40% 12%",
+    muted: "205 38% 92%",
+    mutedFg: "215 20% 30%",
+    card: "0 0% 100%",
+    cardFg: "222 40% 12%",
+    border: "205 25% 85%",
+    ring: "212 90% 46%",
+    accent: "205 100% 92%",
+    accentFg: "212 80% 30%",
+    destructive: "354 75% 46%",
     destructiveFg: "0 0% 100%"
   },
   dusk: {
-    bg: "335 32% 15%",
-    fg: "20 60% 94%",
-    muted: "335 26% 21%",
-    mutedFg: "345 30% 80%",
-    card: "335 30% 19%",
-    cardFg: "20 60% 94%",
-    border: "335 20% 30%",
-    ring: "350 100% 66%",
-    accent: "345 55% 29%",
-    accentFg: "345 100% 87%",
-    destructive: "350 85% 60%",
-    destructiveFg: "330 18% 9%"
+    bg: "268 40% 15%",
+    fg: "30 90% 94%",
+    muted: "268 32% 21%",
+    mutedFg: "280 25% 80%",
+    card: "268 36% 19%",
+    cardFg: "30 90% 94%",
+    border: "268 25% 32%",
+    ring: "24 95% 62%",
+    accent: "300 40% 30%",
+    accentFg: "320 90% 87%",
+    destructive: "354 85% 64%",
+    destructiveFg: "268 40% 10%"
   },
   night: {
-    bg: "330 18% 7%",
-    fg: "340 25% 92%",
-    muted: "330 14% 12%",
-    mutedFg: "340 12% 72%",
-    card: "330 16% 10%",
-    cardFg: "340 25% 92%",
-    border: "330 12% 21%",
-    ring: "350 100% 62%",
-    accent: "345 40% 18%",
-    accentFg: "345 100% 85%",
-    destructive: "350 80% 58%",
-    destructiveFg: "330 18% 7%"
+    bg: "228 45% 7%",
+    fg: "215 40% 93%",
+    muted: "228 35% 12%",
+    mutedFg: "215 20% 74%",
+    card: "228 38% 10%",
+    cardFg: "215 40% 93%",
+    border: "228 25% 20%",
+    ring: "200 90% 65%",
+    accent: "222 45% 20%",
+    accentFg: "200 90% 85%",
+    destructive: "354 80% 62%",
+    destructiveFg: "228 45% 7%"
   }
 };
 
 export const PHASES: Phase[] = ["dawn", "day", "dusk", "night"];
 
-/** Colors of the four arcs on the dial (page chrome, not tokens). */
-export const ARC: Record<Phase, string> = {
-  dawn: "#FF8FAB",
-  day: "#FFDCE7",
-  dusk: "#C81040",
-  night: "#1A1216"
+/** Sky behind the hero. Scenery, not tokens: the page text on top of it still comes from the tokens. */
+export const SKY: Record<Phase, string> = {
+  dawn: "linear-gradient(180deg, #ffd3bd 0%, #ffbfc9 48%, #fde9db 100%)",
+  day: "linear-gradient(180deg, #a9d8ff 0%, #dcefff 52%, #f4faff 100%)",
+  dusk: "linear-gradient(180deg, #23143f 0%, #5a2468 46%, #c2506a 78%, #f08a55 100%)",
+  night: "linear-gradient(180deg, #03061a 0%, #0a1433 62%, #16224a 100%)"
+};
+
+/** Ruler band colors. */
+export const BAND: Record<Phase, string> = {
+  dawn: "#ff9e7a",
+  day: "#7cc4ff",
+  dusk: "#a33a8c",
+  night: "#18224d"
 };

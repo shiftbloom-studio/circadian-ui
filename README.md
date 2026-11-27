@@ -6,7 +6,7 @@
 
 **Circadian UI** is a production‑ready, time‑aware theming engine for React and Tailwind. It adapts your design tokens across dawn/day/dusk/night based on local time, optional sunrise/sunset data, system preferences, and user overrides - while enforcing accessible contrast.
 
-**Live demo:** [circadian.shiftbloom.studio](https://circadian.shiftbloom.studio): drag the sun around a 24-hour dial, try real sunrise times for eight cities and break the contrast on purpose to watch it get fixed.
+**Live demo:** [circadian.shiftbloom.studio](https://circadian.shiftbloom.studio): scrub through a day and watch the whole page change with it, try real sunrise times for eight cities and break the contrast on purpose to watch it get fixed.
 
 ## What makes it special
 

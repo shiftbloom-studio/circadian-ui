@@ -52,7 +52,7 @@ export function LiveReadout({ onPreview }: { onPreview: () => void }) {
         ))}
       </div>
       <button type="button" className="btn ghost" onClick={onPreview}>
-        Show my time on the dial
+        Show my time on the timeline
       </button>
     </div>
   );
