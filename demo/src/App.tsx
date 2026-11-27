@@ -170,7 +170,7 @@ export function App() {
             <p className="lede">
               circadian-ui moves an interface through dawn, day, dusk and night tokens as the hours pass, using the
               visitor's clock or the real sunrise where they are, and fixes any text color that drops below WCAG on the way.
-              Drag the timeline at the bottom. Everything on this page, down to the footer, is reading the same 12 CSS
+              Drag the timeline. Everything on this page, down to the footer, is reading the same 12 CSS
               variables.
             </p>
             <div className="install">
