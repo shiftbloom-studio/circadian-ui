@@ -132,24 +132,6 @@ h3 {
   -webkit-mask: radial-gradient(circle at 72% 30%, transparent 34%, #000 35%);
   mask: radial-gradient(circle at 72% 30%, transparent 34%, #000 35%);
 }
-.horizon {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--horizon);
-  background: hsl(var(--cui-bg));
-  transition: background-color var(--slow);
-}
-.horizon::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -1px;
-  height: 1px;
-  background: hsl(var(--cui-fg) / 0.25);
-}
 
 .top {
   display: flex;
@@ -306,9 +288,21 @@ h3 {
 /* Dock: controls + ruler, sitting on the horizon */
 .dock {
   grid-template-columns: minmax(0, 1fr);
-  padding: 0 var(--pad) 18px;
+  padding: 0 var(--pad);
   display: grid;
   gap: 10px;
+}
+/* The hint and the timeline always sit on the ground, however many lines the hint wraps to. */
+.dock-ground {
+  display: grid;
+  gap: 10px;
+  margin: 0 calc(-1 * var(--pad));
+  padding: 14px var(--pad) 18px;
+  background: hsl(var(--cui-bg));
+  border-top: 1px solid hsl(var(--cui-fg) / 0.25);
+  transition:
+    background-color var(--slow),
+    border-color var(--slow);
 }
 .dock-bar {
   margin-bottom: 8px;
@@ -415,6 +409,8 @@ select {
 .ruler {
   position: relative;
   height: 58px;
+  /* Room for the time label above the thumb, so it never sits on the hint text. */
+  margin-top: 26px;
   touch-action: none;
   user-select: none;
   cursor: ew-resize;
@@ -430,6 +426,8 @@ select {
   background: hsl(var(--cui-muted));
 }
 .seg-band {
+  container-type: inline-size;
+  overflow: hidden;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -438,6 +436,23 @@ select {
   display: flex;
   align-items: center;
   padding-left: 10px;
+}
+/* The thumb sits in the first half of this band: move the name to the other end so the thumb never covers it. */
+.seg-band.label-end {
+  justify-content: flex-end;
+  padding: 0 10px 0 0;
+}
+/* Too narrow for its name (night after midnight on a phone): show the color only. */
+@container (max-width: 64px) {
+  .seg-band em {
+    display: none;
+  }
+}
+/* The band the thumb is in is too short to keep the name clear of it: the time label above says the phase anyway. */
+@container (max-width: 120px) {
+  .seg-band.has-thumb em {
+    display: none;
+  }
 }
 .seg-band.on {
   opacity: 1;
@@ -489,7 +504,8 @@ select {
   position: absolute;
   bottom: calc(100% + 6px);
   left: 50%;
-  transform: translateX(-50%);
+  /* Slides from left-aligned at 00:00 to right-aligned at 24:00, so it never leaves the track. */
+  transform: translateX(calc(var(--f, 0.5) * -100%));
   font: 600 12px/1 var(--mono);
   padding: 5px 8px;
   border-radius: 999px;

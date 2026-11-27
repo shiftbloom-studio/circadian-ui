@@ -231,13 +231,15 @@ export function App() {
               </button>
             </div>
           </div>
-          <p className="dock-hint">
-            {source === "clock"
-              ? "Clock schedule: dawn 05:30, day 08:30, dusk 17:30, night 21:30. Those are the defaults, and you can move every one."
-              : polar ??
-                `${city.name}, ${day.label}: sunrise ${hhmm(sun.rise ?? 0)}, sunset ${hhmm(sun.set ?? 0)}. Dawn and dusk run 45 minutes either side.`}
-          </p>
-          <Ruler minutes={minutes} phase={sim.phase} schedule={sim.schedule} onChange={setMinutes} onScrubStart={stop} />
+          <div className="dock-ground">
+            <p className="dock-hint">
+              {source === "clock"
+                ? "Clock schedule: dawn 05:30, day 08:30, dusk 17:30, night 21:30. Those are the defaults, and you can move every one."
+                : polar ??
+                  `${city.name}, ${day.label}: sunrise ${hhmm(sun.rise ?? 0)}, sunset ${hhmm(sun.set ?? 0)}. Dawn and dusk run 45 minutes either side.`}
+            </p>
+            <Ruler minutes={minutes} phase={sim.phase} schedule={sim.schedule} onChange={setMinutes} onScrubStart={stop} />
+          </div>
         </div>
       </section>
 

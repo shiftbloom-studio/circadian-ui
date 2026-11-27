@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { useMemo, useRef, type KeyboardEvent, type PointerEvent } from "react";
+import { useMemo, useRef, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import type { CircadianScheduleMinutes, Phase } from "@shiftbloom-studio/circadian-ui";
 import { BAND, PHASES, SKY } from "./palette";
 import { hhmm } from "./sky";
@@ -56,7 +56,6 @@ export function SkyScene({ minutes, phase, schedule }: Pick<SkyProps, "minutes" 
         ))}
       </div>
       <div className={`orb ${c.body}`} style={{ left: `${left}%`, bottom: `calc(var(--horizon) + ${bottom}%)` }} />
-      <div className="horizon" />
     </div>
   );
 }
@@ -108,7 +107,9 @@ export function Ruler({ minutes, phase, schedule, onChange, onScrubStart }: SkyP
         {segments.map(({ p, a, b }) => (
           <span
             key={`${p}-${a}`}
-            className={`seg-band ${p}${p === phase ? " on" : ""}`}
+            className={`seg-band ${p}${p === phase ? " on" : ""}${
+              minutes >= a && minutes < b ? ` has-thumb${minutes - a < (b - a) / 2 ? " label-end" : ""}` : ""
+            }`}
             style={{ left: `${(a / 1440) * 100}%`, width: `${((b - a) / 1440) * 100}%`, background: BAND[p] }}
           >
             {b - a > 120 && <em>{p}</em>}
@@ -124,7 +125,7 @@ export function Ruler({ minutes, phase, schedule, onChange, onScrubStart }: SkyP
       </div>
       <div
         className="thumb"
-        style={{ left: `${(minutes / 1440) * 100}%` }}
+        style={{ left: `${(minutes / 1440) * 100}%`, "--f": minutes / 1440 } as CSSProperties}
         role="slider"
         tabIndex={0}
         aria-label="Time of day"
