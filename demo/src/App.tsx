@@ -40,10 +40,13 @@ function CopyButton({ text, label = "Copy" }: { text: string; label?: string }) 
       type="button"
       className="copy"
       onClick={() => {
-        navigator.clipboard?.writeText(text).then(() => {
-          setDone(true);
-          window.setTimeout(() => setDone(false), 1600);
-        });
+        navigator.clipboard
+          ?.writeText(text)
+          .then(() => {
+            setDone(true);
+            window.setTimeout(() => setDone(false), 1600);
+          })
+          .catch(() => setDone(false));
       }}
     >
       {done ? "Copied" : label}

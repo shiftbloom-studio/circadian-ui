@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 /** Imprint and privacy policy in English and German. Operator details come from the LEGAL var; nothing personal is hardcoded. */
-import { bloomSvg, faviconSvg } from "./bloom";
+import { bloomSvg, faviconSvg } from "../src/bloom";
 
 export type LegalInfo = {
   name: string;
