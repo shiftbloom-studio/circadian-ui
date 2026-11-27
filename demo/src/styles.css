@@ -449,7 +449,7 @@ select {
   }
 }
 /* The band the thumb is in is too short to keep the name clear of it: the time label above says the phase anyway. */
-@container (max-width: 160px) {
+@container (max-width: 120px) {
   .seg-band.has-thumb em {
     display: none;
   }
