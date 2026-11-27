@@ -33,6 +33,8 @@ import {
 export interface CircadianContextValue extends CircadianState {
   setMode: (mode: ScheduleMode) => void;
   setPhaseOverride: (phase: Phase) => void;
+  timeOverride: Date | null;
+  setTimeOverride: (date: Date | null) => void;
   clearOverride: () => void;
   isAuto: boolean;
   resolvedMode: ScheduleMode;
@@ -112,6 +114,7 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
   const [phase, setPhase] = useState<Phase>(() =>
     config.initialPhase ?? computePhase(new Date(), mode, config, phaseOverride, null)
   );
+  const [timeOverride, setTimeOverrideState] = useState<Date | null>(null);
 
   const [nextChangeAt, setNextChangeAt] = useState<Date | null>(() =>
     computeNextChange(new Date(), mode, config, null)
@@ -172,13 +175,13 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
   );
 
   const updatePhase = useCallback(() => {
-    const now = new Date();
+    const now = timeOverride ?? new Date();
     const { resolvedMode, sunTimes } = resolveModeWithSun(now);
     const nextPhase = computePhase(now, resolvedMode, config, phaseOverride, sunTimes);
     setResolvedMode(resolvedMode);
     setPhase(nextPhase);
     setNextChangeAt(computeNextChange(now, resolvedMode, config, sunTimes));
-  }, [config, phaseOverride, resolveModeWithSun]);
+  }, [config, phaseOverride, resolveModeWithSun, timeOverride]);
 
   useEffect(() => {
     updatePhase();
@@ -186,6 +189,9 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
 
   useEffect(() => {
     if (resolvedMode === "manual") {
+      return;
+    }
+    if (timeOverride) {
       return;
     }
     if (timerRef.current) {
@@ -203,7 +209,7 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
         window.clearTimeout(timerRef.current);
       }
     };
-  }, [resolvedMode, nextChangeAt, updatePhase]);
+  }, [resolvedMode, nextChangeAt, updatePhase, timeOverride]);
 
   useEffect(() => {
     const root = getRootElement(config.setAttributeOn);
@@ -261,9 +267,13 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
     setPhaseOverrideState(nextPhase);
     setModeState("manual");
   }, []);
+  const setTimeOverride = useCallback((date: Date | null) => {
+    setTimeOverrideState(date);
+  }, []);
 
   const clearOverride = useCallback(() => {
     setPhaseOverrideState(null);
+    setTimeOverrideState(null);
     setModeState(config.mode ?? "auto");
   }, [config.mode]);
 
@@ -275,11 +285,24 @@ export const CircadianProvider = ({ config = {}, children }: CircadianProviderPr
       nextChangeAt,
       setMode,
       setPhaseOverride,
+      timeOverride,
+      setTimeOverride,
       clearOverride,
       isAuto: mode !== "manual",
       resolvedMode
     }),
-    [phase, mode, tokens, nextChangeAt, setMode, setPhaseOverride, clearOverride, resolvedMode]
+    [
+      phase,
+      mode,
+      tokens,
+      nextChangeAt,
+      setMode,
+      setPhaseOverride,
+      timeOverride,
+      setTimeOverride,
+      clearOverride,
+      resolvedMode
+  ]
   );
 
   return <CircadianContext.Provider value={contextValue}>{children}</CircadianContext.Provider>;
