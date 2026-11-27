@@ -1,0 +1,21 @@
+# Search engines and AI answer engines may read this demo; training AI models on it is not allowed.
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bytespider
+User-agent: Amazonbot
+User-agent: meta-externalagent
+User-agent: cohere-ai
+User-agent: MistralAI-Training
+User-agent: Diffbot
+Disallow: /
+Allow: /sitemap.xml
+
+Sitemap: https://circadian.shiftbloom.studio/sitemap.xml
