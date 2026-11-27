@@ -255,10 +255,15 @@ h3 {
   white-space: nowrap;
 }
 .copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
   font: 500 13px/1 var(--sans);
+  text-box: trim-both cap alphabetic;
   border: 0;
   border-radius: 999px;
-  padding: 10px 16px;
+  padding: 0 16px;
   background: hsl(var(--cui-accent));
   color: hsl(var(--cui-accent-fg));
   cursor: pointer;
